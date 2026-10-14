@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import Kpi from './components/Kpi.jsx'
@@ -7,17 +7,52 @@ import Side from './components/Side.jsx'
 import GuestTable from './components/GuestTable.jsx'
 import Wishes from './components/Wishes.jsx'
 import Footer from './components/Footer.jsx'
+import BuatUndangan from './pages/BuatUndangan.jsx'
 import { BroadcastModal, GuestModal } from './components/Modals.jsx'
-import { initialGuests } from './data/guestsA.js'
-import { moreGuests } from './data/guestsB.js'
 
 export default function App() {
-  const [guests, setGuests] = useState([...initialGuests, ...moreGuests])
+  const getRoute = () => window.location.pathname
+  const [route, setRoute] = useState(getRoute())
+  useEffect(() => {
+    const onPop = () => setRoute(getRoute())
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+  if (route === '/buat-undangan') return <BuatRoute />
+  return <DashboardRoute />
+}
+
+function BuatRoute() {
+  const [toast, setToast] = useState('')
+  const notify = (t) => { setToast(t); setTimeout(() => setToast(''), 3200) }
+  return (
+    <div className="bg-surface text-on-surface min-h-screen font-sans">
+      <Header route="/buat-undangan" />
+      <main className="w-full pt-20 bg-surface">
+        <BuatUndangan notify={notify} />
+      </main>
+      <Footer />
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-full bg-on-secondary-fixed text-white text-[13px] shadow-xl">{toast}</div>
+      )}
+    </div>
+  )
+}
+
+function DashboardRoute() {
+  const [guests, setGuests] = useState(() => [])
   const [query, setQuery] = useState('')
   const [cat, setCat] = useState('all')
   const [toast, setToast] = useState('')
   const [modal, setModal] = useState(null)
-
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    let alive = true
+    Promise.all([import('./data/guestsA.js'), import('./data/guestsB.js')]).then(([a, b]) => {
+      if (alive) { setGuests([...a.initialGuests, ...b.moreGuests]); setReady(true) }
+    })
+    return () => { alive = false }
+  }, [])
   const notify = (t) => { setToast(t); setTimeout(() => setToast(''), 3200) }
 
   const filtered = useMemo(() => {
