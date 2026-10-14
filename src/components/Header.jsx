@@ -6,19 +6,20 @@ export default function Header({ route = '/' }) {
     { label: 'Katalog Tema', href: '/#katalog' },
     { label: 'Studio Ilustrasi', href: '/#studio' },
     { label: 'Dashboard Manajemen', href: '/' },
-    { label: 'Demo Undangan', href: '/#demo' },
+    { label: 'Demo Undangan', href: '/landing-page' },
     { label: 'Fitur', href: '/#fitur' },
     { label: 'Harga', href: '/#harga' },
   ]
 
   const isActive = (l) => {
-    if (route === '/buat-undangan') return l.label === 'Dashboard Manajemen' ? false : false
+    if (route === '/landing-page') return l.label === 'Demo Undangan'
+    if (route === '/buat-undangan') return false
     return l.label === 'Dashboard Manajemen'
   }
 
   const go = (e, href) => {
     // SPA navigation for internal routes without reload when possible
-    if (href === '/' || href === '/buat-undangan') {
+    if (href === '/' || href === '/buat-undangan' || href === '/landing-page') {
       e.preventDefault()
       if (window.location.pathname !== href) {
         window.history.pushState({}, '', href)
