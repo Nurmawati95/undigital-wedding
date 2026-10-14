@@ -1,4 +1,4 @@
 /* SPA fallback for static hosts: /buat-undangan -> index.html */
 {
-  "rewrites": [{ "source": "/buat-undangan", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/buat-undangan", "destination": "/index.html" }, { "source": "/landing-page", "destination": "/index.html" }, { "source": "/studio-custom", "destination": "/index.html" }]
 }

@@ -4,7 +4,7 @@ export default function Header({ route = '/' }) {
   const links = [
     { label: 'Beranda', href: '/' },
     { label: 'Katalog Tema', href: '/#katalog' },
-    { label: 'Studio Ilustrasi', href: '/#studio' },
+    { label: 'Studio Ilustrasi', href: '/studio-custom' },
     { label: 'Dashboard Manajemen', href: '/' },
     { label: 'Demo Undangan', href: '/landing-page' },
     { label: 'Fitur', href: '/#fitur' },
@@ -13,13 +13,14 @@ export default function Header({ route = '/' }) {
 
   const isActive = (l) => {
     if (route === '/landing-page') return l.label === 'Demo Undangan'
+    if (route === '/studio-custom') return l.label === 'Studio Ilustrasi'
     if (route === '/buat-undangan') return false
     return l.label === 'Dashboard Manajemen'
   }
 
   const go = (e, href) => {
     // SPA navigation for internal routes without reload when possible
-    if (href === '/' || href === '/buat-undangan' || href === '/landing-page') {
+    if (href === '/' || href === '/buat-undangan' || href === '/landing-page' || href === '/studio-custom') {
       e.preventDefault()
       if (window.location.pathname !== href) {
         window.history.pushState({}, '', href)

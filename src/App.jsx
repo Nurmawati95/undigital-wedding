@@ -9,6 +9,7 @@ import Wishes from './components/Wishes.jsx'
 import Footer from './components/Footer.jsx'
 import BuatUndangan from './pages/BuatUndangan.jsx'
 import LandingPage from './pages/LandingPage.jsx'
+import StudioCustom from './pages/StudioCustom.jsx'
 import { BroadcastModal, GuestModal } from './components/Modals.jsx'
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
   }, [])
   if (route === '/buat-undangan') return <BuatRoute />
   if (route === '/landing-page') return <LandingRoute />
+  if (route === '/studio-custom') return <StudioRoute />
   return <DashboardRoute />
 }
 
@@ -49,6 +51,23 @@ function LandingRoute() {
       <Header route="/landing-page" />
       <main className="w-full pt-20 bg-surface">
         <LandingPage notify={notify} />
+      </main>
+      <Footer />
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-full bg-on-secondary-fixed text-white text-[13px] shadow-xl">{toast}</div>
+      )}
+    </div>
+  )
+}
+
+function StudioRoute() {
+  const [toast, setToast] = useState('')
+  const notify = (t) => { setToast(t); setTimeout(() => setToast(''), 3200) }
+  return (
+    <div className="bg-surface text-on-surface min-h-screen font-sans">
+      <Header route="/studio-custom" />
+      <main className="w-full pt-20 bg-surface">
+        <StudioCustom notify={notify} />
       </main>
       <Footer />
       {toast && (
